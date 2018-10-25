@@ -85,13 +85,15 @@ while True:
                 logging.info('=Looking for mining spots')
 
                 neighbours = ship.position.get_surrounding_cardinals()
-                neighbours_halite = [game_map[pos].halite_amount if not(game_map[pos].is_occupied) else 0 for pos in neighbours]
-                move = neighbours[np.argmax(neighbours_halite)]
-                logging.info(move)
+                directions = Direction.get_all_cardinals()
+                neighbours_halite = [game_map[pos].halite_amount if not(game_map[pos].is_occupied) else -1 for pos in neighbours]
+                max_index = np.argmax(neighbours_halite)
+                move = directions[max_index]
 
                 command_queue.append(
-                    ship.move(
-                        game_map.naive_navigate(ship, move)))
+                    ship.move(move))
+                game_map[neighbours[max_index]].mark_unsafe(ship)
+
             else:
                 logging.info('=Mining')
                 command_queue.append(ship.stay_still())

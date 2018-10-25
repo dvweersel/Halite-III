@@ -21,6 +21,12 @@ class Player:
         """
         return self._ships[ship_id]
 
+    def get_ships_id(self):
+        """
+        :return: Returns all ship objects in a list
+        """
+        return [*self._ships.keys()]
+
     def get_ships(self):
         """
         :return: Returns all ship objects in a list

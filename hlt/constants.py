@@ -4,6 +4,9 @@ They come from game engine and changing them has no effect.
 They are strictly informational.
 """
 
+# My constants
+OBJECTIVE_MINE = 'm'
+OBJECTIVE_RETURN = 'r'
 
 def load_constants(constants):
     """

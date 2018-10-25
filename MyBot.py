@@ -33,8 +33,9 @@ game.ready("MyPythonBot")
 #   Here, you log here your id, which you can always fetch from the game object by using my_id.
 logging.info("Successfully created bot! My Player ID is {}.".format(game.my_id))
 
-""" <<<Game Loop>>> """
+HALITE_RETURN_VALUE = 500
 
+""" <<<Game Loop>>> """
 while True:
     # This loop handles each turn of the game. The game object changes every turn, and you refresh that state by
     #   running update_frame().
@@ -43,19 +44,43 @@ while True:
     me = game.me
     game_map = game.game_map
 
+    me_ships = me.get_ships_id()
+    logging.info('We have {} ships'.format(len(me_ships)))
+
     # A command queue holds all the commands you will run this turn. You build this list up and submit it at the
     #   end of the turn.
     command_queue = []
 
     for ship in me.get_ships():
-        # For each of your ships, move randomly if the ship is on a low halite location or the ship is full.
-        #   Else, collect halite.
-        if game_map[ship.position].halite_amount < constants.MAX_HALITE / 10 or ship.is_full:
-            command_queue.append(
-                ship.move(
-                    random.choice([ Direction.North, Direction.South, Direction.East, Direction.West ])))
-        else:
-            command_queue.append(ship.stay_still())
+        logging.info(ship)
+
+        if ship.halite_amount > HALITE_RETURN_VALUE:
+            ship.objective = constants.OBJECTIVE_RETURN
+
+        if ship.objective == constants.OBJECTIVE_RETURN:
+            if game_map.calculate_distance(ship.position, me.shipyard.position) == 0:
+                logging.info("BACK TO MINING")
+                ship.objective = constants.OBJECTIVE_MINE
+            else:
+                logging.info("RETURNING")
+                command_queue.append(
+                    ship.move(
+                        game_map.naive_navigate(ship, me.shipyard.position)))
+        elif ship.objective == constants.OBJECTIVE_MINE:
+            # For each of your ships, move randomly if the ship is on a low halite location or the ship is full.
+            #   Else, collect halite.
+            if ship.halite_amount < game_map[ship.position].halite_amount/constants.MOVE_COST_RATIO:
+                logging.info('Not enough halite to move')
+                command_queue.append(ship.stay_still())
+
+            elif game_map[ship.position].halite_amount < constants.MAX_HALITE / 10:
+                logging.info('Looking for mining spots')
+                command_queue.append(
+                    ship.move(
+                        random.choice([ Direction.North, Direction.South, Direction.East, Direction.West ])))
+            else:
+                logging.info('HELLO')
+                command_queue.append(ship.stay_still())
 
     # If the game is in the first 200 turns and you have enough halite, spawn a ship.
     # Don't spawn a ship if you currently have a ship at port, though - the ships will collide.

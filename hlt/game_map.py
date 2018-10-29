@@ -193,7 +193,7 @@ class GameMap:
 
             for neighbour in position.get_surrounding_cardinals():
                 neighbour = self.normalize(neighbour)
-                new_cost = cost + self[neighbour].halite_amount/10
+                new_cost = cost + self[neighbour].halite_amount/10 + 10
                 #logging.info("Adding node {} with cost {}".format(neighbour, new_cost))
                 heappush(q, (new_cost, neighbour))
 

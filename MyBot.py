@@ -91,12 +91,19 @@ while True:
                 directions = Direction.get_all_cardinals()
                 neighbours_halite = [game_map[pos].halite_amount if not(game_map[pos].is_occupied) else -1 for pos in neighbours]
                 max_index = np.argmax(neighbours_halite)
-                move = directions[max_index]
+                if game_map[ship.position].halite_amount == 0 \
+                        or neighbours_halite[max_index] > game_map[ship.position].halite_amount \
+                        or ship.position == me.shipyard.position:
+                    move = directions[max_index]
 
-                command_queue.append(
-                    ship.move(move))
+                    command_queue.append(
+                        ship.move(move))
 
-                game_map[neighbours[max_index]].mark_unsafe(ship)
+                    game_map[neighbours[max_index]].mark_unsafe(ship)
+                else:
+                    logging.info('=No Better spot found')
+                    command_queue.append(
+                        ship.move(Direction.Still))
 
             else:
                 logging.info('=Mining')

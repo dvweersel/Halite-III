@@ -4,10 +4,7 @@
     <list default="true" id="9c69929b-d43d-42df-a7bc-204e736991be" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBot.py" beforeDir="false" afterPath="$PROJECT_DIR$/MyBot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyOldBot.py" beforeDir="false" afterPath="$PROJECT_DIR$/MyOldBot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hlt/game_map.py" beforeDir="false" afterPath="$PROJECT_DIR$/hlt/game_map.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hlt/positionals.py" beforeDir="false" afterPath="$PROJECT_DIR$/hlt/positionals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_game.bat" beforeDir="false" afterPath="$PROJECT_DIR$/run_game.bat" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,22 +16,22 @@
     <session id="-132543170">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="5" />
+          <entry key="project.closed" value="7" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.14" value="2" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.8" value="1" />
-          <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="8" />
+          <entry key="project.open.time.9" value="2" />
+          <entry key="project.opened" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="bat" value="5" />
           <entry key="gitignore" value="4" />
-          <entry key="log" value="181" />
+          <entry key="log" value="185" />
           <entry key="md" value="2" />
           <entry key="py" value="68" />
           <entry key="txt" value="4" />
@@ -45,7 +42,7 @@
         <counts>
           <entry key="Bat" value="1" />
           <entry key="Markdown" value="2" />
-          <entry key="PLAIN_TEXT" value="193" />
+          <entry key="PLAIN_TEXT" value="197" />
           <entry key="Python" value="68" />
           <entry key="YAML" value="1" />
         </counts>
@@ -54,7 +51,7 @@
         <counts>
           <entry key="bat" value="25" />
           <entry key="gitignore" value="7" />
-          <entry key="py" value="5195" />
+          <entry key="py" value="5309" />
           <entry key="txt" value="12" />
         </counts>
       </usages-collector>
@@ -62,19 +59,19 @@
         <counts>
           <entry key="Bat" value="8" />
           <entry key="PLAIN_TEXT" value="36" />
-          <entry key="Python" value="5195" />
+          <entry key="Python" value="5309" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/MyBot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="591">
-              <caret line="43" column="26" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
+            <state relative-caret-position="268">
+              <caret line="89" column="34" lean-forward="true" selection-start-line="89" selection-start-column="34" selection-end-line="89" selection-end-column="34" />
               <folding>
                 <element signature="e#105#115#0" expanded="true" />
               </folding>
@@ -83,10 +80,20 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-161355+0100-1540826009-32-32-1.log">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-161130+0100-1540825855-32-32-1.log">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bot-0.log">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1124">
-              <caret line="70" column="20" lean-forward="true" selection-start-line="70" selection-start-column="20" selection-end-line="70" selection-end-column="20" />
+            <state relative-caret-position="-8007">
+              <caret line="71" column="20" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -94,11 +101,21 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hlt/game_map.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="289">
+              <caret line="195" column="71" selection-start-line="195" selection-start-column="71" selection-end-line="195" selection-end-column="71" />
               <folding>
-                <marker date="1540820705166" expanded="true" signature="6074:7844" ph="..." />
+                <element signature="e#0#12#0" expanded="true" />
+                <marker date="1540825851773" expanded="true" signature="6074:7849" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bot-1.log">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="64" column="17" selection-start-line="64" selection-start-column="17" selection-end-line="64" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -143,7 +160,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -156,6 +173,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -177,7 +195,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -215,10 +232,9 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="-7" y="0" width="974" height="1047" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22550052" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.45726496" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -228,7 +244,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49947312" visible="true" weight="0.2516269" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49947312" visible="true" weight="0.25410733" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50052685" side_tool="true" weight="0.329718" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.329718" />
@@ -274,9 +290,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-114436+0100-1540809876-32-32-0.log" />
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-114541+0100-1540809940-32-32-0.log" />
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-114632+0100-1540809991-32-32-0.log" />
     <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-115402+0100-1540810441-32-32-0.log" />
     <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-120125+0100-1540810884-32-32-0.log" />
     <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-120149+0100-1540810908-32-32-0.log" />
@@ -324,89 +337,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134608+0100-1540817167-32-32-0.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="44" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134608+0100-1540817167-32-32-1.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134711+0100-1540817218-32-32-0.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="57" column="26" lean-forward="true" selection-start-line="57" selection-start-column="26" selection-end-line="57" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134711+0100-1540817218-32-32-1.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134854+0100-1540817320-32-32-0.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134854+0100-1540817320-32-32-1.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142203+0100-1540819306-32-32-0.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142203+0100-1540819306-32-32-1.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142410+0100-1540819437-32-32-0.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142410+0100-1540819437-32-32-1.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142637+0100-1540819596-32-32-0.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142637+0100-1540819596-32-32-1.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142709+0100-1540819614-32-32-0.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142709+0100-1540819614-32-32-1.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot-1.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3041" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142909+0100-1540819736-32-32-0.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="42" column="74" lean-forward="true" selection-start-line="42" selection-start-column="74" selection-end-line="42" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-143217+0100-1540819928-32-32-1.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="37" selection-start-line="20" selection-start-column="37" selection-end-line="21" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-143217+0100-1540819928-32-32-0.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="90" column="26" lean-forward="true" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-143323+0100-1540819988-32-32-0.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134608+0100-1540817167-32-32-0.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134608+0100-1540817167-32-32-1.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134711+0100-1540817218-32-32-0.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134711+0100-1540817218-32-32-1.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134854+0100-1540817320-32-32-0.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-134854+0100-1540817320-32-32-1.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142203+0100-1540819306-32-32-0.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142203+0100-1540819306-32-32-1.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142410+0100-1540819437-32-32-0.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142410+0100-1540819437-32-32-1.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142637+0100-1540819596-32-32-0.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142637+0100-1540819596-32-32-1.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142709+0100-1540819614-32-32-0.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142709+0100-1540819614-32-32-1.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-142909+0100-1540819736-32-32-0.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-143217+0100-1540819928-32-32-1.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-143217+0100-1540819928-32-32-0.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-143323+0100-1540819988-32-32-0.log" />
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -415,16 +363,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-143323+0100-1540819988-32-32-1.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-143718+0100-1540820217-32-32-0.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="461">
-          <caret line="34" column="38" lean-forward="true" selection-start-line="34" selection-start-column="38" selection-end-line="34" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-143323+0100-1540819988-32-32-1.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-143718+0100-1540820217-32-32-0.log" />
     <entry file="file://$PROJECT_DIR$/MyOldBot.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -439,35 +379,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-144016+0100-1540820400-32-32-0.log">
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-144016+0100-1540820400-32-32-0.log" />
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-144141+0100-1540820481-32-32-0.log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot-0.log">
+      <provider editor-type-id="LargeFileEditor">
+        <state relative-caret-position="-11296" />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-661" />
+        <state relative-caret-position="-8007">
+          <caret line="71" column="20" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hlt/game_map.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        <state relative-caret-position="289">
+          <caret line="195" column="71" selection-start-line="195" selection-start-column="71" selection-end-line="195" selection-end-column="71" />
           <folding>
-            <marker date="1540820705166" expanded="true" signature="6074:7844" ph="..." />
+            <element signature="e#0#12#0" expanded="true" />
+            <marker date="1540825851773" expanded="true" signature="6074:7849" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot-0.log">
+    <entry file="file://$PROJECT_DIR$/bot-1.log">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1124">
-          <caret line="70" column="20" lean-forward="true" selection-start-line="70" selection-start-column="20" selection-end-line="70" selection-end-column="20" />
+        <state relative-caret-position="272">
+          <caret line="64" column="17" selection-start-line="64" selection-start-column="17" selection-end-line="64" selection-end-column="17" />
         </state>
       </provider>
-      <provider editor-type-id="LargeFileEditor">
-        <state relative-caret-position="-11296" />
-      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-161355+0100-1540826009-32-32-1.log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/replays/errorlog-20181029-161130+0100-1540825855-32-32-1.log">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/MyBot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="591">
-          <caret line="43" column="26" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
+        <state relative-caret-position="268">
+          <caret line="89" column="34" lean-forward="true" selection-start-line="89" selection-start-column="34" selection-end-line="89" selection-end-column="34" />
           <folding>
             <element signature="e#105#115#0" expanded="true" />
           </folding>

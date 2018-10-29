@@ -80,6 +80,9 @@ class Position:
         """
         return [self.directional_offset(current_direction) for current_direction in Direction.get_all_cardinals()]
 
+    def as_tuple(self):
+        return (self.x, self.y)
+
     def __add__(self, other):
         return Position(self.x + other.x, self.y + other.y)
 
@@ -96,11 +99,18 @@ class Position:
         self.y -= other.y
         return self
 
+    def __hash__(self):
+        return hash((self.x, self.y))
+
     def __abs__(self):
         return Position(abs(self.x), abs(self.y))
 
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y
+
+    # TODO: Needed for HeapQ
+    def __lt__(self, other):
+        return self.x + self.y < other.x + other.y
 
     def __ne__(self, other):
         return not self.__eq__(other)

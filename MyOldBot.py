@@ -54,10 +54,6 @@ while True:
     #   end of the turn.
     command_queue = []
 
-    logging.info("Creating map")
-    distance_map = game_map.dijkstra_map(me.shipyard)
-    logging.info("Done. Directing ships")
-
     for ship in me.get_ships():
         logging.info(ship)
 
@@ -70,10 +66,9 @@ while True:
                 ship.objective = constants.OBJECTIVE_MINE
             else:
                 logging.info("=Returning")
-                move = game_map.navigate_back(ship, distance_map)
-
                 command_queue.append(
-                    ship.move(move))
+                    ship.move(
+                        game_map.naive_navigate(ship, me.shipyard.position)))
         elif ship.objective == constants.OBJECTIVE_MINE:
             # For each of your ships, move randomly if the ship is on a low halite location or the ship is full.
             #   Else, collect halite.

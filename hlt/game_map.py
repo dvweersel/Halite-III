@@ -5,7 +5,11 @@ from .entity import Entity, Shipyard, Ship, Dropoff
 from .player import Player
 from .positionals import Direction, Position
 from .common import read_input
+import logging
 
+from math import inf
+
+from heapq import *
 
 class MapCell:
     """A cell on the game map."""
@@ -157,12 +161,57 @@ class GameMap:
         # No need to normalize destination, since get_unsafe_moves
         # does that
         for direction in self.get_unsafe_moves(ship.position, destination):
-            target_pos = ship.position.directional_offset(direction)
+            target_pos = self.normalize(ship.position.directional_offset(direction))
             if not self[target_pos].is_occupied:
                 self[target_pos].mark_unsafe(ship)
                 return direction
 
         return Direction.Still
+
+    def dijkstra_map(self, base):
+        """
+        Creates a dijkstra map containing cost of returning to the shipyard
+        :return: The shipyard:
+        """
+        q, cost_map = [], {}
+
+        heappush(q, (0, base.position))
+        while q:
+            #logging.info("Queue is {}".format(q))
+            #logging.info("Smalles element is {}".format(q[0]))
+            (cost, position) = heappop(q)
+            #logging.info("Checking node {} with cost {}".format(position, cost))
+
+            if position in cost_map:
+                #logging.info("Already in map")
+                continue
+
+            #logging.info("Adding to cost_map")
+            cost_map[position] = cost
+            #logging.info(cost_map)
+
+            for neighbour in position.get_surrounding_cardinals():
+                neighbour = self.normalize(neighbour)
+                new_cost = cost + self[neighbour].halite_amount/10
+                #logging.info("Adding node {} with cost {}".format(neighbour, new_cost))
+                heappush(q, (new_cost, neighbour))
+
+        logging.info("Output map")
+        return cost_map
+
+    def navigate_back(self, ship, dijkstra_map):
+        """
+        Returns a move order based on the dijkstra map
+        :return: The move:
+        """
+        cost = inf
+        for direction in Direction.get_all_cardinals():
+            target_pos = ship.position.directional_offset(direction)
+            if not self[target_pos].is_occupied and dijkstra_map[target_pos] < cost:
+                cost = dijkstra_map[target_pos]
+                move = direction
+
+        return move
 
     @staticmethod
     def _generate():

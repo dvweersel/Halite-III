@@ -9,6 +9,7 @@ import logging
 
 from math import inf
 
+
 from heapq import *
 
 class MapCell:
@@ -206,12 +207,17 @@ class GameMap:
         """
         cost = inf
         for direction in Direction.get_all_cardinals():
-            target_pos = ship.position.directional_offset(direction)
-            if not self[target_pos].is_occupied and dijkstra_map[target_pos] < cost:
+            target_pos = self.normalize(ship.position.directional_offset(direction))
+            if dijkstra_map[target_pos] < cost:
                 cost = dijkstra_map[target_pos]
-                move = direction
+                move_dir = direction
+                move_pos = target_pos
 
-        return move
+        if self[move_pos].is_occupied:
+            return Direction.Still
+        else:
+            self[move_pos].mark_unsafe(ship)
+            return move_dir
 
     @staticmethod
     def _generate():

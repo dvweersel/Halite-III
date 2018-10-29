@@ -19,7 +19,7 @@ import logging
 
 # My imports
 import numpy as np
-
+from timeit import default_timer as timer
 """ <<<Game Begin>>> """
 
 # This game object contains the initial game state.
@@ -36,10 +36,11 @@ game.ready("MyPythonBot")
 # Here, you log here your id, which you can always fetch from the game object by using my_id.
 logging.info("Successfully created bot! My Player ID is {}.".format(game.my_id))
 
-HALITE_RETURN_VALUE = 500
+HALITE_RETURN_VALUE = 800
 
 """ <<<Game Loop>>> """
 while True:
+    round_timer_start = timer()
     # This loop handles each turn of the game. The game object changes every turn, and you refresh that state by
     #   running update_frame().
     game.update_frame()
@@ -55,8 +56,10 @@ while True:
     command_queue = []
 
     logging.info("Creating map")
+    map_timer_start = timer()
     distance_map = game_map.dijkstra_map(me.shipyard)
-    logging.info("Done. Directing ships")
+    map_timer_end = timer()
+    logging.info("Created map in {}".format(map_timer_end-map_timer_start))
 
     for ship in me.get_ships():
         logging.info(ship)
@@ -104,6 +107,8 @@ while True:
     if game.turn_number <= 200 and me.halite_amount >= constants.SHIP_COST and not game_map[me.shipyard].is_occupied:
         command_queue.append(me.shipyard.spawn())
 
+    round_timer_end = timer()
+    logging.info("Round took {} second".format(round_timer_end - round_timer_start))
     # Send your moves back to the game environment, ending this turn.
     game.end_turn(command_queue)
 

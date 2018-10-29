@@ -108,9 +108,9 @@ class Position:
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y
 
-    # TODO: Needed for HeapQ
+    # TODO: Make implementation more meaningful
     def __lt__(self, other):
-        return self.x + self.y < other.x + other.y
+        return False
 
     def __ne__(self, other):
         return not self.__eq__(other)

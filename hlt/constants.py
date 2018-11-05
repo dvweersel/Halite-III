@@ -7,6 +7,7 @@ They are strictly informational.
 # My constants
 OBJECTIVE_MINE = 'm'
 OBJECTIVE_RETURN = 'r'
+OBJECTIVE_SUICIDE = 's'
 
 def load_constants(constants):
     """

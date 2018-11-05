@@ -8,6 +8,7 @@ from .common import read_input
 import logging
 
 from math import inf
+import numpy as np
 
 
 from heapq import *
@@ -19,6 +20,7 @@ class MapCell:
         self.halite_amount = halite_amount
         self.ship = None
         self.structure = None
+        self.potential = 0
 
     @property
     def is_empty(self):
@@ -64,7 +66,6 @@ class MapCell:
 
     def __str__(self):
         return 'MapCell({}, halite={})'.format(self.position, self.halite_amount)
-
 
 class GameMap:
     """
@@ -151,24 +152,6 @@ class GameMap:
                                   else Direction.invert(y_cardinality))
         return possible_moves
 
-    def naive_navigate(self, ship, destination):
-        """
-        Returns a singular safe move towards the destination.
-
-        :param ship: The ship to move.
-        :param destination: Ending position
-        :return: A direction.
-        """
-        # No need to normalize destination, since get_unsafe_moves
-        # does that
-        for direction in self.get_unsafe_moves(ship.position, destination):
-            target_pos = self.normalize(ship.position.directional_offset(direction))
-            if not self[target_pos].is_occupied:
-                self[target_pos].mark_unsafe(ship)
-                return direction
-
-        return Direction.Still
-
     def dijkstra_map(self, base):
         """
         Creates a dijkstra map containing cost of returning to the shipyard
@@ -176,34 +159,197 @@ class GameMap:
         """
         q, cost_map = [], {}
 
+        avg_halite = 0
         heappush(q, (0, base.position))
         while q:
-            #logging.info("Queue is {}".format(q))
-            #logging.info("Smalles element is {}".format(q[0]))
             (cost, position) = heappop(q)
-            #logging.info("Checking node {} with cost {}".format(position, cost))
 
             if position in cost_map:
-                #logging.info("Already in map")
                 continue
 
-            #logging.info("Adding to cost_map")
+            avg_halite += self[position].halite_amount
+
             cost_map[position] = cost
-            #logging.info(cost_map)
 
             for neighbour in position.get_surrounding_cardinals():
                 neighbour = self.normalize(neighbour)
-                new_cost = cost + self[neighbour].halite_amount/10 + 10
-                #logging.info("Adding node {} with cost {}".format(neighbour, new_cost))
+                avg_halite += self[neighbour].halite_amount
+                new_cost = cost + self[neighbour].halite_amount/10 + 50
                 heappush(q, (new_cost, neighbour))
 
-        logging.info("Output map")
-        return cost_map
+        avg_halite = avg_halite/(self.width*self.height)
+        return cost_map, avg_halite
+
+    def mining(self, ship):
+        neighbours = ship.position.get_surrounding_cardinals()
+        directions = Direction.get_all_cardinals()
+        neighbours_halite = [self[pos].halite_amount if not (self[pos].is_occupied) else -1 for pos in
+                             neighbours]
+
+        max_index = np.argmax(neighbours_halite)
+        if self[ship.position].halite_amount == 0 \
+                or neighbours_halite[max_index] > self[ship.position].halite_amount:
+            move_dir = directions[max_index]
+        else:
+            move_dir = Direction.Still
+
+        return move_dir
+
+    def finding_halite(self, ship):
+
+        logging.info("Calculating best potential for {}".format(ship.position))
+        potential_highest = 0
+        move_dir = Direction.Still
+
+        for direction in Direction.get_all_cardinals():
+            position = self.normalize(ship.position.directional_offset(direction))
+
+            if self[position].is_occupied:
+                potential = 0
+            else:
+                potential = self._calculate_potential_cell(position, [])
+
+            if potential > potential_highest:
+                potential_highest = potential
+                move_dir = direction
+
+        return move_dir
+
+    def suicide_order(self, ship, dropoffs):
+        """
+        Calculates the potential of a point
+        :param: The position for which te calculate dropoffs
+        :param: A list of the dropoffs
+        :return: the potential:
+        """
+
+    def _calculate_potential_cell(self, source, dropoffs):
+        """
+        Calculates the potential of a point
+        :param: The position for which te calculate dropoffs
+        :param: A list of the dropoffs
+        :return: the potential:
+        """
+        q, seen = [], {}
+
+        map_size = self.width
+        potential = 0
+
+        heappush(q, (0, source))
+        while q:
+            (distance, position) = heappop(q)
+
+            if position in seen:
+                continue
+
+            seen[position] = distance
+
+            if distance < 5:
+                # Calculate potential
+                halite_cell = self[position].halite_amount
+                #ship_cell = self[position].ship
+
+                if self[position].structure:
+                    potential_add = 0
+                else:
+                    potential_add = halite_cell*(map_size - distance)
+
+                potential += potential_add
+
+                for neighbour in position.get_surrounding_cardinals():
+                    neighbour = self.normalize(neighbour)
+                    new_cost = distance + 1
+                    heappush(q, (new_cost, neighbour))
+
+        logging.info("Potential of {} is {}".format(source, potential))
+
+        return potential
+
+    def finding_halite_2(self, ship):
+
+        logging.info("Calculating best potential for {}".format(ship.position))
+        potential_highest = 0
+        move_dir = Direction.Still
+
+        for direction in Direction.get_all_cardinals():
+            position = self.normalize(ship.position.directional_offset(direction))
+
+            if self[position].is_occupied:
+                potential = 0
+            else:
+                potential = self._calculate_potential_cell_2(position, [])
+
+            if potential > potential_highest:
+                potential_highest = potential
+                move_dir = direction
+
+        return move_dir
+
+    def _calculate_potential_cell_2(self, source, dropoffs):
+        """
+        Calculates the potential of a point
+        :param: The position for which te calculate dropoffs
+        :param: A list of the dropoffs
+        :return: the potential:
+        """
+        q, seen = [], {}
+
+        map_size = self.width
+        potential = 0
+
+        heappush(q, (0, source))
+        while q:
+            (distance, position) = heappop(q)
+
+            if position in seen:
+                continue
+
+            seen[position] = distance
+
+            # Calculate potential
+            halite_cell = self[position].halite_amount
+            #ship_cell = self[position].ship
+
+            if self[position].structure:
+                potential_add = -100*(map_size - distance)
+            else:
+                potential_add = halite_cell*(map_size - distance)*(map_size - distance)
+
+            potential += potential_add
+
+            for neighbour in position.get_surrounding_cardinals():
+                neighbour = self.normalize(neighbour)
+                new_cost = distance + 1
+                heappush(q, (new_cost, neighbour))
+
+        logging.info("Potential of {} is {}".format(source, potential))
+
+        return potential
+
+    def radar(self, source):
+        q, seen = [], {}
+
+        heappush(q, (0, source))
+        while q:
+            (distance, position) = heappop(q)
+
+            if self.calculate_distance(source, position) <= 2:
+                if position in seen:
+                    continue
+
+                seen[position] = distance
+
+                for neighbour in position.get_surrounding_cardinals():
+                    neighbour = self.normalize(neighbour)
+                    new_cost = distance + 1
+                    heappush(q, (new_cost, neighbour))
+
+        return q
 
     def navigate_back(self, ship, dijkstra_map):
         """
-        Returns a move order based on the dijkstra map
-        :return: The move:
+        Returns a direction following the dijkstra_map
+        :return: The direction:
         """
         cost = inf
         for direction in Direction.get_all_cardinals():
@@ -211,13 +357,8 @@ class GameMap:
             if dijkstra_map[target_pos] < cost:
                 cost = dijkstra_map[target_pos]
                 move_dir = direction
-                move_pos = target_pos
 
-        if self[move_pos].is_occupied:
-            return Direction.Still
-        else:
-            self[move_pos].mark_unsafe(ship)
-            return move_dir
+        return move_dir
 
     @staticmethod
     def _generate():

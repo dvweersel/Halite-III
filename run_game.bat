@@ -1,3 +1,3 @@
 call activate halite
-halite.exe --replay-directory replays/ -vvv --width 32 --height 32 "python MyBot.py" "python MyOldBot.py"
-PAUSE
+halite.exe --replay-directory replays/ -vvv --width 64 --height 64 --seed 1541371012 "python MyBot.py" "python MyOldBot.py" "python MyOldBot.py" "python MyOldBot.py"
+call deactivate

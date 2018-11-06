@@ -40,7 +40,7 @@ logging.info("Successfully created bot! My Player ID is {}.".format(game.my_id))
 
 TIMING = False
 
-HALITE_RETURN_VALUE = 700
+HALITE_RETURN_VALUE = 800
 mission_control = {}
 
 """ <<<Game Loop>>> """
@@ -58,12 +58,12 @@ while True:
 
     if TIMING: map_timer_start = timer()
     if game.turn_number == 1:
-        distance_map, initial_halite = game_map.dijkstra_map(me.shipyard)
+        distance_map, initial_halite = game_map.dijkstra_map_dev(me.shipyard)
         avg_halite = initial_halite
         halite_collected = 0
         logging.info("Inital halite is: {}".format(initial_halite))
     else:
-        distance_map, avg_halite = game_map.dijkstra_map(me.shipyard)
+        distance_map, avg_halite = game_map.dijkstra_map_dev(me.shipyard)
         halite_collected = 1 - avg_halite / initial_halite
         logging.info("Average halite is: {}, {}".format(avg_halite, halite_collected))
 
@@ -141,10 +141,10 @@ while True:
 
                 if any(x > avg_halite/8 for x in neighbours_halite):
                     logging.info('Mining neighbour')
-                    target_direction = game_map.mining(ship)
+                    target_direction = game_map.mining_dev(ship)
                 else:
                     logging.info('Looking for mining spots')
-                    target_direction = game_map.finding_halite(ship)
+                    target_direction = game_map.finding_halite_dev(ship)
 
             # We are at an optimal spot. Mine
             else:
@@ -206,8 +206,7 @@ while True:
     # Don't spawn a ship if you currently have a ship at port, though - the ships will collide.
     ship_at_port = any(pos == me.shipyard.position for pos in destination_list.keys())
     if halite_collected < 1/amount_of_players and me.halite_amount >= constants.SHIP_COST and not ship_at_port:
-    # if game.turn_number <= 200 and me.halite_amount >= constants.SHIP_COST and not ship_at_port:
-        if game.turn_number <= constants.MAX_TURNS/1.8:
+        if game.turn_number <= constants.MAX_TURNS/2:
             command_queue.append(me.shipyard.spawn())
     else:
         HALITE_RETURN_VALUE = 900

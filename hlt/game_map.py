@@ -299,6 +299,8 @@ class GameMap:
         :param: A list of the dropoffs
         :return: the potential:
         """
+        normalize = self.normalize()
+
         q, seen = [], {}
 
         map_size = self.width
@@ -324,7 +326,7 @@ class GameMap:
 
             if distance < 20:
                 for neighbour in position.get_surrounding_cardinals():
-                    neighbour = self.normalize(neighbour)
+                    neighbour = normalize(neighbour)
                     heappush(q, (new_distance, neighbour))
 
         logging.info("Potential of {} is {}".format(source, potential))

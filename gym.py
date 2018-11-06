@@ -7,6 +7,12 @@ import os
 import shutil
 from trueskill import TrueSkill
 
+for root, dirs, files in os.walk('./replays/'):
+    for f in files:
+        os.unlink(os.path.join(root, f))
+    for d in dirs:
+        shutil.rmtree(os.path.join(root, d))
+
 rounds = 50
 players = ['MyBot.py', 'MyOldBot.py', 'MyBot2.py', 'MyOldBot2.py']
 wins = np.zeros(len(players))
@@ -25,7 +31,7 @@ except:
 for i in range(rounds):
     print("Match: {}".format(i))
     os.system('call activate halite')
-    os.system('halite.exe --no-replay --no-logs --width 44 --height 44 --results-as-json "python MyBot.py" "python MyOldBot.py" "python MyBot.py" "python MyOldBot.py" >> data.gameout')
+    os.system('halite.exe --replay-directory replays/ --width 44 --height 44 --results-as-json "python MyBot.py" "python MyOldBot.py" "python MyBot.py" "python MyOldBot.py" >> data.gameout')
     os.system('call deactivate')
 
     with open('data.gameout', 'r') as f:

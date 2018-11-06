@@ -5,42 +5,52 @@ import json
 
 import os
 import shutil
+from trueskill import TrueSkill
 
-rounds = 10
+rounds = 5
+players = ['MyBot.py', 'MyOldBot.py']
+wins = np.zeros(len(players))
 
-tracker = np.array([0,0])
+env = TrueSkill(draw_probability=0)
+rating_groups = [{player_id: env.create_rating()} for player_id, player in enumerate(players)]
+
+system_string ='halite.exe --replay-directory replays/ -vvv --width 4 --height 4 --results-as-json ' + '"python " + " python ".join(players)' + ' >> data.gameout'
+print(system_string)
 
 for i in range(rounds):
     print("Match: {}".format(i))
     os.system('call activate halite')
-    os.system('halite.exe --replay-directory replays/ -vvv --width 32 --height 32 --results-as-json "python MyBot.py" "python MyOldBot.py" >> data.gameout')
+    os.system('halite.exe --replay-directory replays/ -vvv --width 4 --height 4 --results-as-json "python MyBot.py" "python MyBot.py" >> data.gameout')
     os.system('call deactivate')
 
     with open('data.gameout', 'r') as f:
         output = json.load(open("data.gameout"))
 
+        result = [player_stats for player_stats in output['stats']]
 
-        players = [player_stats for player_stats in output['stats']]
+        result_rank = [output['stats'][player_id]['rank'] - 1 for player_id in result]
+        result_halite = [output['stats'][player_id]['score'] for player_id in result]
 
-        stats = [output['stats'][player_id]['rank'] for player_id in players]
-        halite = [output['stats'][player_id]['score'] for player_id in players]
-        wins = [1 if x == 1 else 0 for x in stats]
+        wins = np.add(wins, result_rank)
 
-        tracker = np.add(tracker, wins)
-
-        bot1_rank = output['stats']['0']['rank']
-        bot1_halite = output['stats']['0']['score']
-
-        bot2_rank = output['stats']['1']['rank']
-        bot2_halite = output['stats']['1']['score']
-
-        # print("bot1 rank: {} halite: {}".format(stats[0], halite[0]))
-        # print("bot2 rank: {} halite: {}".format(stats[1], halite[1]))
+        new_ratings = env.rate(rating_groups, result_rank)
+        ratings = [r for r in new_ratings]
 
     os.remove('data.gameout')
 
-print("bot1 won {}%".format(tracker[0]/rounds*100))
-print("bot2 won {}%".format(tracker[1]/rounds*100))
+
+rating_dict = dict((key, env.expose(d[key])) for d in ratings for key in d)
+
+print("Completed")
+print(rating_dict)
+print(ratings)
+winrate = 1-wins/rounds
+
+report = {}
+for player_id in range(len(players)):
+    report[player_id] = [rating_dict[player_id], winrate[player_id]]
+
+print(report)
 
 for root, dirs, files in os.walk('./replays/'):
     for f in files:

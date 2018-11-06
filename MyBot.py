@@ -40,7 +40,9 @@ logging.info("Successfully created bot! My Player ID is {}.".format(game.my_id))
 
 TIMING = False
 
-HALITE_RETURN_VALUE = 800
+HALITE_RETURN_VALUE = 900
+STOP_VALUE = 0.5 - amount_of_players/15
+
 mission_control = {}
 
 """ <<<Game Loop>>> """
@@ -205,11 +207,9 @@ while True:
     # If the game is in the first 200 turns and you have enough halite, spawn a ship.
     # Don't spawn a ship if you currently have a ship at port, though - the ships will collide.
     ship_at_port = any(pos == me.shipyard.position for pos in destination_list.keys())
-    if halite_collected < 1/amount_of_players and me.halite_amount >= constants.SHIP_COST and not ship_at_port:
+    if halite_collected < STOP_VALUE and me.halite_amount >= constants.SHIP_COST and not ship_at_port:
         if game.turn_number <= constants.MAX_TURNS/2:
             command_queue.append(me.shipyard.spawn())
-    else:
-        HALITE_RETURN_VALUE = 900
 
     if TIMING: round_timer_end = timer()
     if TIMING: logging.info("Round took {} second".format(round_timer_end - round_timer_start))

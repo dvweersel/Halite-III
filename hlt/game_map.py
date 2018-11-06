@@ -237,22 +237,21 @@ class GameMap:
 
             seen[position] = distance
 
-            if distance < 15:
-                # Calculate potential
-                halite_cell = self[position].halite_amount
-                #ship_cell = self[position].ship
+            # Calculate potential
+            halite_cell = self[position].halite_amount
+            #ship_cell = self[position].ship
 
-                if self[position].structure:
-                    potential_add = 0
-                else:
-                    potential_add = halite_cell*(map_size - distance)
+            if self[position].structure:
+                potential_add = 0
+            else:
+                potential_add = halite_cell*(map_size - distance)
 
-                potential += potential_add
-
+            potential += potential_add
+            new_distance = distance + 1
+            if distance < 20:
                 for neighbour in position.get_surrounding_cardinals():
                     neighbour = self.normalize(neighbour)
-                    new_cost = distance + 1
-                    heappush(q, (new_cost, neighbour))
+                    heappush(q, (new_distance, neighbour))
 
         logging.info("Potential of {} is {}".format(source, potential))
 
@@ -313,20 +312,20 @@ class GameMap:
                 continue
 
             seen[position] = distance
+            # Calculate potential
+            halite_cell = self[position].halite_amount
+            #ship_cell = self[position].ship
+
+            potential_add = halite_cell*(map_size - distance)*(map_size - distance)
+
+            potential += potential_add
+
+            new_distance = distance + 1
 
             if distance < 20:
-                # Calculate potential
-                halite_cell = self[position].halite_amount
-                #ship_cell = self[position].ship
-
-                potential_add = halite_cell*(map_size - distance)*(map_size - distance)
-
-                potential += potential_add
-
                 for neighbour in position.get_surrounding_cardinals():
                     neighbour = self.normalize(neighbour)
-                    new_cost = distance + 1
-                    heappush(q, (new_cost, neighbour))
+                    heappush(q, (new_distance, neighbour))
 
         logging.info("Potential of {} is {}".format(source, potential))
 

@@ -7,20 +7,25 @@ import os
 import shutil
 from trueskill import TrueSkill
 
-rounds = 5
-players = ['MyBot.py', 'MyOldBot.py']
+rounds = 50
+players = ['MyBot.py', 'MyOldBot.py', 'MyBot2.py', 'MyOldBot2.py']
 wins = np.zeros(len(players))
 
 env = TrueSkill(draw_probability=0)
 rating_groups = [{player_id: env.create_rating()} for player_id, player in enumerate(players)]
 
-system_string ='halite.exe --replay-directory replays/ -vvv --width 4 --height 4 --results-as-json ' + '"python " + " python ".join(players)' + ' >> data.gameout'
-print(system_string)
+# system_string ='halite.exe --replay-directory replays/ -vvv --width 4 --height 4 --results-as-json ' + '"python " + " python ".join(players)' + ' >> data.gameout'
+# print(system_string)
+
+try:
+    os.remove('data.gameout')
+except:
+    print("whoops")
 
 for i in range(rounds):
     print("Match: {}".format(i))
     os.system('call activate halite')
-    os.system('halite.exe --replay-directory replays/ -vvv --width 4 --height 4 --results-as-json "python MyBot.py" "python MyBot.py" >> data.gameout')
+    os.system('halite.exe --no-replay --no-logs --width 44 --height 44 --results-as-json "python MyBot.py" "python MyOldBot.py" "python MyBot.py" "python MyOldBot.py" >> data.gameout')
     os.system('call deactivate')
 
     with open('data.gameout', 'r') as f:
@@ -28,7 +33,8 @@ for i in range(rounds):
 
         result = [player_stats for player_stats in output['stats']]
 
-        result_rank = [output['stats'][player_id]['rank'] - 1 for player_id in result]
+        result_rank = [output['stats'][player_id]['rank'] for player_id in result]
+        result_rank = [1 if x is 1 else 0 for x in result_rank]
         result_halite = [output['stats'][player_id]['score'] for player_id in result]
 
         wins = np.add(wins, result_rank)
@@ -44,16 +50,16 @@ rating_dict = dict((key, env.expose(d[key])) for d in ratings for key in d)
 print("Completed")
 print(rating_dict)
 print(ratings)
-winrate = 1-wins/rounds
+winrate = wins/rounds
 
 report = {}
 for player_id in range(len(players)):
-    report[player_id] = [rating_dict[player_id], winrate[player_id]]
+    report[players[player_id]] = [rating_dict[player_id], winrate[player_id]]
 
 print(report)
 
-for root, dirs, files in os.walk('./replays/'):
-    for f in files:
-        os.unlink(os.path.join(root, f))
-    for d in dirs:
-        shutil.rmtree(os.path.join(root, d))
+# for root, dirs, files in os.walk('./replays/'):
+#     for f in files:
+#         os.unlink(os.path.join(root, f))
+#     for d in dirs:
+#         shutil.rmtree(os.path.join(root, d))

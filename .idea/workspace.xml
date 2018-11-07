@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a7e707b-1624-4df6-82e4-00434e9fd7a8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Halite-III.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Halite-Bot/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Halite.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Halite.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Halite-III.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Halite-v4" beforeDir="false" afterPath="$PROJECT_DIR$/Halite-v4" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Halite-v4/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Halite-v4/.idea/.name" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Halite-v4/.idea/Halite-III.iml" beforeDir="false" />
@@ -28,27 +26,6 @@
       <change beforePath="$PROJECT_DIR$/Halite-v4/requirements.yml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Halite-v4/run_game.bat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Halite-v4/run_game.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyOldBot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/StarterBot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/api-docs.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/game-overview.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym.py" beforeDir="false" afterPath="$PROJECT_DIR$/gym.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/halite.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hlt/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hlt/commands.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hlt/common.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hlt/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hlt/entity.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hlt/game_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hlt/networking.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hlt/player.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hlt/positionals.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_game.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_game.sh" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,63 +44,55 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="bat" value="1" />
-          <entry key="py" value="2" />
+          <entry key="gitignore" value="2" />
+          <entry key="py" value="3" />
           <entry key="yml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Bat" value="1" />
-          <entry key="Python" value="2" />
+          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="Python" value="3" />
           <entry key="YAML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="bat" value="7" />
-          <entry key="py" value="15" />
+          <entry key="gitignore" value="9" />
+          <entry key="py" value="16" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Bat" value="7" />
-          <entry key="Python" value="15" />
+          <entry key="PLAIN_TEXT" value="9" />
+          <entry key="Python" value="16" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Halite-Bot/requirements.yml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Halite-Bot/run_game.bat">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="129" selection-start-line="1" selection-start-column="129" selection-end-line="1" selection-end-column="129" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Halite-Bot/hlt/game_map.py">
+        <entry file="file://$PROJECT_DIR$/Halite-Bot/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="203" column="44" selection-start-line="203" selection-start-column="44" selection-end-line="203" selection-end-column="44" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="170">
+              <caret line="10" column="6" lean-forward="true" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>_dev</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/Halite-Bot" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -131,6 +100,8 @@
         <option value="$PROJECT_DIR$/Halite-Bot/MyOldBot.py" />
         <option value="$PROJECT_DIR$/Halite-Bot/run_game.bat" />
         <option value="$PROJECT_DIR$/Halite-Bot/hlt/game_map.py" />
+        <option value="$PROJECT_DIR$/Halite-v4/hlt/game_map.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -155,23 +126,6 @@
             <path>
               <item name="Halite" type="b2602c69:ProjectViewProjectNode" />
               <item name="Halite" type="462c0819:PsiDirectoryNode" />
-              <item name="Halite-Bot" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Halite" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Halite" type="462c0819:PsiDirectoryNode" />
-              <item name="Halite-Bot" type="462c0819:PsiDirectoryNode" />
-              <item name="hlt" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Halite" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Halite" type="462c0819:PsiDirectoryNode" />
-              <item name="Halite-Bot" type="462c0819:PsiDirectoryNode" />
-              <item name="replays" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Halite" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Halite" type="462c0819:PsiDirectoryNode" />
               <item name="Halite-v4" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -187,6 +141,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\M63G651\Halite\Halite-Bot" />
       <recent name="C:\Users\M63G651\Halite" />
     </key>
   </component>
@@ -217,7 +172,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="3832" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
@@ -262,10 +216,27 @@
     <entry file="file://$PROJECT_DIR$/Halite-Bot/hlt/game_map.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
-          <caret line="203" column="44" selection-start-line="203" selection-start-column="44" selection-end-line="203" selection-end-column="44" />
+          <caret line="203" selection-start-line="203" selection-end-line="204" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Halite-v4/hlt/game_map.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2397">
+          <caret line="258" column="4" selection-start-line="258" selection-start-column="4" selection-end-line="258" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Halite-Bot/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="6" lean-forward="true" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
         </state>
       </provider>
     </entry>

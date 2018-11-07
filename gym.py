@@ -13,8 +13,8 @@ for root, dirs, files in os.walk('./replays/'):
     for d in dirs:
         shutil.rmtree(os.path.join(root, d))
 
-rounds = 10
-players = ['MyBot.py', 'MyOldBot.py', 'MyBot2.py', 'MyOldBot2.py']
+rounds = 3
+players = ['MyBot.py', 'MyOldBot.py']
 wins = np.zeros(len(players))
 
 env = TrueSkill(draw_probability=0)
@@ -31,7 +31,7 @@ except:
 for i in range(rounds):
     print("Match: {}".format(i))
     os.system('call activate halite')
-    os.system('halite.exe --replay-directory replays/ --no-logs --width 44 --height 44 --results-as-json --no-timeout "python MyBot.py" "python MyOldBot.py" "python MyBot.py" "python MyOldBot.py" >> data.gameout')
+    os.system('halite.exe --replay-directory replays/ --no-logs --width 64 --height 64 --results-as-json --no-timeout "python MyBot.py" "python C:\Users\M63G651\Halite\Halite-Bot-v11\MyOldBot.py" >> data.gameout')
     os.system('call deactivate')
 
     with open('data.gameout', 'r') as f:

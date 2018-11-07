@@ -43,8 +43,9 @@ logging.info("Successfully created bot! My Player ID is {}.".format(game.my_id))
 
 TIMING = True
 
+GAME_STATE = 'early'
 HALITE_RETURN_VALUE = 900
-STOP_VALUE = 0.5 - amount_of_players/15
+STOP_VALUE = 0.5 - amount_of_players/25
 
 mission_control = {}
 
@@ -71,19 +72,23 @@ while True:
     if TIMING: logging.info("Created map in {}".format(map_timer_end-map_timer_start))
 
     remaining_turns = constants.MAX_TURNS - game.turn_number
-    suicide = False
-    if remaining_turns < 25 or halite_collected > 0.95:
-        suicide = True
+
     # SET THE OBJECTIVE
     logging.info("SETTING OBJECTIVES")
+    calculate_distance = game_map.calculate_distance
+
     for ship in me.get_ships():
         # Returning
         ship_id = ship.id
         logging.info(ship)
         logging.info("Objective: {}".format(mission_control.get(ship_id)))
-        if suicide:
+
+        distance_to_shipyard = calculate_distance(ship.position, me.shipyard.position)
+
+        if mission_control.get(ship_id) == constants.OBJECTIVE_SUICIDE or distance_to_shipyard+10 > remaining_turns or halite_collected > 0.95:
             mission_control[ship.id] = constants.OBJECTIVE_SUICIDE
             logging.info("Mizu no yo ni nagare")
+            GAME_STATE = 'suicide'
         elif mission_control.get(ship_id) == constants.OBJECTIVE_RETURN:
             if ship.position == me.shipyard.position:
                 # We have reached the dropoff; Mining
@@ -178,7 +183,7 @@ while True:
         command_list.move_to_end(id, False)
         logging.info("Collisions: {}".format(sum(destination_list.values()) - len(destination_list)))
         destination_list = Counter([dest for dest, dir in command_list.values()])
-        if suicide:
+        if GAME_STATE == 'suicide':
             del destination_list[me.shipyard.position]
         logging.info("Dest list: {}".format(destination_list))
 

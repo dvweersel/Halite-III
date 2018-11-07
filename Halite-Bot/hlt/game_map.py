@@ -171,6 +171,7 @@ class GameMap:
     def finding_halite(self, ship, id):
 
         normalize = self.normalize
+        calculate_potential = self._calculate_potential_cell
 
         logging.info("Calculating best potential for {}".format(ship.position))
         potential_highest = 0
@@ -182,7 +183,7 @@ class GameMap:
             if self[position].is_occupied:
                 potential = 0
             else:
-                potential = self._calculate_potential_cell(position, [], id)
+                potential = calculate_potential(position, [], id)
 
             if potential > potential_highest:
                 potential_highest = potential
@@ -201,7 +202,7 @@ class GameMap:
 
         q, seen = [], {}
 
-        map_size = self.width+self.height
+        range = 20
         potential = 0
 
         heappush(q, (0, source))
@@ -211,24 +212,24 @@ class GameMap:
             if position in seen:
                 continue
 
+            # Add to seen
             seen[position] = distance
-            # Calculate potential
-            halite_cell = self[position].halite_amount
-            #ship_cell = self[position].ship
 
-            if self[position].structure is not None and self[position].structure.id == id:
-                potential_add = -1000*(map_size - distance)*(map_size - distance)
-            else:
-                potential_add = halite_cell*(map_size - distance)*(map_size - distance)
+            if self[position].ship is None:
+                # Calculate potential
+                halite_cell = self[position].halite_amount
+                structure_cell = self[position].structure
 
-            potential += potential_add
+                range_factor = (range - distance)
+                if structure_cell is not None and structure_cell.id == id:
+                    potential += -1000*range_factor
+                else:
+                    potential += halite_cell*range_factor*range_factor
 
-            new_distance = distance + 1
-
-            if new_distance < 20:
-                for neighbour in position.get_surrounding_cardinals():
-                    neighbour = normalize(neighbour)
-                    heappush(q, (new_distance, neighbour))
+                # Add new nodes
+                new_distance = distance + 1
+                if new_distance < 20:
+                    [heappush(q, (new_distance, normalize(neighbour))) for neighbour in position.get_surrounding_cardinals()]
 
         logging.info("Potential of {} is {}".format(source, potential))
 
@@ -269,7 +270,9 @@ class GameMap:
         Returns a direction following the dijkstra_map
         :return: The direction:
         """
-        cost = inf
+        cost = dijkstra_map[ship.position]
+        move_dir = Direction.Still
+
         for direction in Direction.get_all_cardinals():
             target_pos = self.normalize(ship.position.directional_offset(direction))
             if dijkstra_map[target_pos] < cost:

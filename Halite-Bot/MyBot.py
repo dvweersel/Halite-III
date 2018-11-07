@@ -27,20 +27,25 @@ from timeit import default_timer as timer
 # This game object contains the initial game state.
 game = hlt.Game()
 
-amount_of_players = len(game.players)
+amount_of_players  = len(game.players)
 
 # At this point "game" variable is populated with initial map data.
 # This is a good place to do computationally expensive start-up pre-processing.
 # As soon as you call "ready" function below, the 2 second per turn timer will start.
-game.ready("MyOldBot")
+distance_map, initial_halite = game.game_map.dijkstra_map(game.me.shipyard)
+logging.info("Inital halite is: {}".format(initial_halite))
+
+game.ready("MyPythonBot")
 
 # Now that your bot is initialized, save a message to yourself in the log file with some important information.
 # Here, you log here your id, which you can always fetch from the game object by using my_id.
 logging.info("Successfully created bot! My Player ID is {}.".format(game.my_id))
 
-TIMING = False
+TIMING = True
 
-HALITE_RETURN_VALUE = 800
+HALITE_RETURN_VALUE = 900
+STOP_VALUE = 0.5 - amount_of_players/15
+
 mission_control = {}
 
 """ <<<Game Loop>>> """
@@ -57,15 +62,9 @@ while True:
     logging.info('We have {} ships'.format(len(me_ships)))
 
     if TIMING: map_timer_start = timer()
-    if game.turn_number == 1:
-        distance_map, initial_halite = game_map.dijkstra_map(me.shipyard)
-        avg_halite = initial_halite
-        halite_collected = 0
-        logging.info("Inital halite is: {}".format(initial_halite))
-    else:
-        distance_map, avg_halite = game_map.dijkstra_map(me.shipyard)
-        halite_collected = 1 - avg_halite / initial_halite
-        logging.info("Average halite is: {}, {}".format(avg_halite, halite_collected))
+    distance_map, avg_halite = game_map.dijkstra_map(me.shipyard)
+    halite_collected = 1 - avg_halite / initial_halite
+    logging.info("Average halite is: {}, {}".format(avg_halite, halite_collected))
 
 
     if TIMING: map_timer_end = timer()
@@ -73,7 +72,7 @@ while True:
 
     remaining_turns = constants.MAX_TURNS - game.turn_number
     suicide = False
-    if remaining_turns < 25:
+    if remaining_turns < 25 or halite_collected > 0.95:
         suicide = True
     # SET THE OBJECTIVE
     logging.info("SETTING OBJECTIVES")
@@ -144,7 +143,7 @@ while True:
                     target_direction = game_map.mining(ship)
                 else:
                     logging.info('Looking for mining spots')
-                    target_direction = game_map.finding_halite(ship)
+                    target_direction = game_map.finding_halite(ship, me.id)
 
             # We are at an optimal spot. Mine
             else:
@@ -205,11 +204,9 @@ while True:
     # If the game is in the first 200 turns and you have enough halite, spawn a ship.
     # Don't spawn a ship if you currently have a ship at port, though - the ships will collide.
     ship_at_port = any(pos == me.shipyard.position for pos in destination_list.keys())
-    if halite_collected < 1/amount_of_players and me.halite_amount >= constants.SHIP_COST and not ship_at_port:
+    if halite_collected < STOP_VALUE and me.halite_amount >= constants.SHIP_COST and not ship_at_port:
         if game.turn_number <= constants.MAX_TURNS/2:
             command_queue.append(me.shipyard.spawn())
-    else:
-        HALITE_RETURN_VALUE = 900
 
     if TIMING: round_timer_end = timer()
     if TIMING: logging.info("Round took {} second".format(round_timer_end - round_timer_start))

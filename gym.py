@@ -7,14 +7,16 @@ import os
 import shutil
 from trueskill import TrueSkill
 
+import subprocess
+
 for root, dirs, files in os.walk('./replays/'):
     for f in files:
         os.unlink(os.path.join(root, f))
     for d in dirs:
         shutil.rmtree(os.path.join(root, d))
 
-rounds = 3
-players = ['MyBot.py', 'MyOldBot.py']
+rounds = 20
+players = ['MyBot.py', 'MyBot-v11.py', 'MyBot-v13.py', 'MyBot-2.py']
 wins = np.zeros(len(players))
 
 env = TrueSkill(draw_probability=0)
@@ -26,12 +28,16 @@ rating_groups = [{player_id: env.create_rating()} for player_id, player in enume
 try:
     os.remove('data.gameout')
 except:
-    print("whoops")
+    print()
 
 for i in range(rounds):
     print("Match: {}".format(i))
     os.system('call activate halite')
-    os.system('halite.exe --replay-directory replays/ --no-logs --width 64 --height 64 --results-as-json --no-timeout "python MyBot.py" "python C:\Users\M63G651\Halite\Halite-Bot-v11\MyOldBot.py" >> data.gameout')
+    os.system('halite.exe --replay-directory replays/ --no-logs --width 64 --height 64 --results-as-json --no-timeout '
+              '"python C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot\\MyBot.py" '
+              '"python C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot-v13\\MyBot-v13.py" '
+              '"python C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot-v11\\MyBot-v11.py" '
+              '"python C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot\\MyBot.py" >> data.gameout')
     os.system('call deactivate')
 
     with open('data.gameout', 'r') as f:
@@ -40,22 +46,18 @@ for i in range(rounds):
         result = [player_stats for player_stats in output['stats']]
 
         result_rank = [output['stats'][player_id]['rank'] for player_id in result]
-        result_rank = [1 if x is 1 else 0 for x in result_rank]
         result_halite = [output['stats'][player_id]['score'] for player_id in result]
 
-        wins = np.add(wins, result_rank)
-
+        print(result_rank)
+        wins = np.add(wins, [1 if x is 1 else 0 for x in result_rank])
         new_ratings = env.rate(rating_groups, result_rank)
         ratings = [r for r in new_ratings]
 
     os.remove('data.gameout')
 
-
 rating_dict = dict((key, env.expose(d[key])) for d in ratings for key in d)
 
 print("Completed")
-print(rating_dict)
-print(ratings)
 winrate = wins/rounds
 
 report = {}

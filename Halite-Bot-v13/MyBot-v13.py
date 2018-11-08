@@ -29,15 +29,13 @@ game = hlt.Game()
 
 amount_of_players  = len(game.players)
 
-
-
 # At this point "game" variable is populated with initial map data.
 # This is a good place to do computationally expensive start-up pre-processing.
 # As soon as you call "ready" function below, the 2 second per turn timer will start.
 distance_map, initial_halite = game.game_map.dijkstra_map(game.me.shipyard)
 logging.info("Inital halite is: {}".format(initial_halite))
 
-game.ready("MyPythonBot")
+game.ready("MyBot-v13")
 
 # Now that your bot is initialized, save a message to yourself in the log file with some important information.
 # Here, you log here your id, which you can always fetch from the game object by using my_id.
@@ -47,7 +45,7 @@ TIMING = True
 
 GAME_STATE = 'early'
 HALITE_RETURN_VALUE = 900
-STOP_VALUE = 0.5
+STOP_VALUE = 0.5 - amount_of_players/25
 
 mission_control = {}
 
@@ -94,12 +92,15 @@ while True:
         elif mission_control.get(ship_id) == constants.OBJECTIVE_RETURN:
             if ship.position == me.shipyard.position:
                 # We have reached the dropoff; Mining
+                logging.info("=DROPOFF SUCCESFUL")
                 mission_control[ship.id] = constants.OBJECTIVE_MINE
             else:
                 # Returning
+                logging.info("=RETURNING")
                 mission_control[ship.id] = constants.OBJECTIVE_RETURN
         elif mission_control.get(ship_id) == constants.OBJECTIVE_MINE:
             if ship.halite_amount > HALITE_RETURN_VALUE:
+                logging.info("=RETURNING")
                 mission_control[ship.id] = constants.OBJECTIVE_RETURN
         else:
             mission_control[ship.id] = constants.OBJECTIVE_MINE
@@ -108,8 +109,6 @@ while True:
 
     # A command queue holds all the commands you will run this turn. You build this list up and submit it at the
     #   end of the turn.
-    logging.info("=========== ORDERING SHIPS ===========")
-    
     command_list = OrderedDict({})
     for ship in me.get_ships():
         logging.info("={}".format(ship))
@@ -144,9 +143,9 @@ while True:
                 neighbours_halite = [game_map[pos].halite_amount if not (game_map[pos].is_occupied) else -1 for pos in
                                      neighbours]
 
-                if any(x > avg_halite/8 for x in neighbours_halite) and all(x > 100 for x in neighbours_halite):
+                if any(x > avg_halite/8 for x in neighbours_halite):
                     logging.info('Mining neighbour')
-                    target_direction = game_map.mining_dev(ship)
+                    target_direction = game_map.mining(ship)
                 else:
                     logging.info('Looking for mining spots')
                     target_direction = game_map.finding_halite(ship, me.id)
@@ -157,20 +156,19 @@ while True:
                 target_direction = Direction.Still
 
         # Store move information
-        logging.info(target_direction)
         ship_destination = game_map.normalize(ship.position.directional_offset(target_direction))
         command_list.update({ship.id: [ship_destination, target_direction]})
 
     destination_list = Counter([dest for dest, dir in command_list.values()])
-    #logging.info("Dest list: {}".format(destination_list))
+    logging.info("Dest list: {}".format(destination_list))
 
-    #logging.info("Sum: {}, Length: {}".format(sum(destination_list.values()),len(destination_list)))
+    logging.info("Sum: {}, Length: {}".format(sum(destination_list.values()),len(destination_list)))
 
     while sum(destination_list.values()) != len(destination_list):
         item = command_list.popitem()
 
-        # logging.info("Popping {}".format(item))
-        # logging.info("Command list: {}".format(command_list))
+        logging.info("Popping {}".format(item))
+        logging.info("Command list: {}".format(command_list))
         id = item[0]
         destination = item[1][0]
         direction = item[1][1]
@@ -183,11 +181,11 @@ while True:
             command_list.update({id: [destination, direction]})
 
         command_list.move_to_end(id, False)
-        # logging.info("Collisions: {}".format(sum(destination_list.values()) - len(destination_list)))
+        logging.info("Collisions: {}".format(sum(destination_list.values()) - len(destination_list)))
         destination_list = Counter([dest for dest, dir in command_list.values()])
         if GAME_STATE == 'suicide':
             del destination_list[me.shipyard.position]
-        # logging.info("Dest list: {}".format(destination_list))
+        logging.info("Dest list: {}".format(destination_list))
 
     # Avoid getting stuck
     near_spawn = [game_map[x].ship for x in me.shipyard.position.get_surrounding_cardinals() if game_map[x].ship != None]
@@ -198,7 +196,7 @@ while True:
             deadman = game_map[me.shipyard.position].ship
             command_list.update({deadman.id: ["Fucked", Direction.North]})
 
-    # logging.info("Collisions: {}".format(sum(destination_list.values()) - len(destination_list)))
+    logging.info("Collisions: {}".format(sum(destination_list.values()) - len(destination_list)))
     logging.info("Command list: {}".format(command_list))
 
     # Make the moves

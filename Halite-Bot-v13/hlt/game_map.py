@@ -118,15 +118,6 @@ class GameMap:
         """
         return Position(position.x % self.width, position.y % self.height)
 
-    def get_all_positions(self, position):
-        """
-        :return: Returns a list of all positions around this specific position
-        """
-        current_position = [position]
-        neighbours = [self.normalize(p) for p in position.get_surrounding_cardinals()]
-
-        return current_position + neighbours
-
     @staticmethod
     def _get_target_direction(source, target):
         """
@@ -177,41 +168,12 @@ class GameMap:
 
         return move_dir
 
-    def turns_needed(self, ship, target_position, move):
-        current_position = ship.position
-        halite = ship.halite_amount
-
-        target_halite = self[target_position].halite_amount
-
-        turns = 0
-        #If we have to move, we lose a turn and some halite (to go there, and return)
-        if move:
-            turns += 1
-            halite -= 2*self[current_position].halite_amount * constants.MOVE_COST_RATIO
-
-        while halite < 900 or target_halite < 100:
-            turns += 1
-            halite += (target_halite + 3) / 4
-            target_halite -= (target_halite + 3) / 4
-
-        return turns
-
-    def mining_dev(self, ship):
-
-        possible_directions = Direction.get_all_directions()
-        possible_positions = self.get_all_positions(ship.position)
-        turns_needed = [self.turns_needed(ship, position, ship.position != position) for position in possible_positions]
-
-        move_dir = possible_directions[np.argmin(turns_needed)]
-
-        return move_dir
-
     def finding_halite(self, ship, id):
 
         normalize = self.normalize
         calculate_potential = self._calculate_potential_cell
 
-        # logging.info("Calculating best potential for {}".format(ship.position))
+        logging.info("Calculating best potential for {}".format(ship.position))
         potential_highest = 0
         move_dir = Direction.Still
 
@@ -269,7 +231,7 @@ class GameMap:
                 if new_distance < 20:
                     [heappush(q, (new_distance, normalize(neighbour))) for neighbour in position.get_surrounding_cardinals()]
 
-        # logging.info("Potential of {} is {}".format(source, potential))
+        logging.info("Potential of {} is {}".format(source, potential))
 
         return potential
 

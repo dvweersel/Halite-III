@@ -8,6 +8,11 @@ They are strictly informational.
 OBJECTIVE_MINE = 'm'
 OBJECTIVE_RETURN = 'r'
 OBJECTIVE_SUICIDE = 's'
+OBJECTIVE_DROPOFF = 'd'
+
+GAME_STATE_RAMP = 'r'
+GAME_STATE_COLLECT = 'c'
+GAME_STATE_SUICIDE = 's'
 
 def load_constants(constants):
     """

@@ -15,8 +15,8 @@ for root, dirs, files in os.walk('./replays/'):
     for d in dirs:
         shutil.rmtree(os.path.join(root, d))
 
-rounds = 20
-players = ['MyBot.py', 'MyBot-v11.py', 'MyBot-v13.py', 'MyBot-2.py']
+rounds = 5
+players = ['MyBot.py', 'MyBot-v11.py']
 wins = np.zeros(len(players))
 
 env = TrueSkill(draw_probability=0)
@@ -33,11 +33,14 @@ except:
 for i in range(rounds):
     print("Match: {}".format(i))
     os.system('call activate halite')
-    os.system('halite.exe --replay-directory replays/ --no-logs --width 64 --height 64 --results-as-json --no-timeout '
-              '"python C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot\\MyBot.py" '
-              '"python C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot-v13\\MyBot-v13.py" '
-              '"python C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot-v11\\MyBot-v11.py" '
-              '"python C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot\\MyBot.py" >> data.gameout')
+    # os.system('halite.exe --replay-directory replays/ --no-logs --width 64 --height 64 --results-as-json --no-timeout '
+    #           '"pypy3 C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot\\MyBot.py" '
+    #           '"pypy3 C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot-v13\\MyBot-v13.py" '
+    #           '"pypy3 C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot-v11\\MyBot-v11.py" '
+    #           '"pypy3 C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot\\MyBot.py" >> data.gameout')
+    os.system('halite.exe --replay-directory replays/ --width 2 --height 2 --results-as-json --no-timeout '
+              '"pypy3 C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot\\MyBot.py" '
+              '"pypy3 C:\\Users\Administrator\\Documents\\Halite\\Halite-III\\Halite-Bot-v13\\MyBot-v13.py" >> data.gameout')
     os.system('call deactivate')
 
     with open('data.gameout', 'r') as f:

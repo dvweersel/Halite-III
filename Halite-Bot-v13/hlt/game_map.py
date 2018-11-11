@@ -202,7 +202,7 @@ class GameMap:
 
         q, seen = [], {}
 
-        range = 20
+        range = self.width+self.height
         potential = 0
 
         heappush(q, (0, source))
@@ -228,8 +228,8 @@ class GameMap:
 
                 # Add new nodes
                 new_distance = distance + 1
-                if new_distance < 20:
-                    [heappush(q, (new_distance, normalize(neighbour))) for neighbour in position.get_surrounding_cardinals()]
+                for neighbour in position.get_surrounding_cardinals():
+                    heappush(q, (new_distance, normalize(neighbour)))
 
         logging.info("Potential of {} is {}".format(source, potential))
 

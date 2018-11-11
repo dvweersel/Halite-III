@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env pypy
 # Python 3.6
 
 # Import the Halite SDK, which will let you interact with the game.
@@ -8,7 +8,8 @@ import hlt
 from hlt import constants
 
 # This library contains direction metadata to better interface with the game.
-from hlt.positionals import Direction
+from hlt.positionals import Direction, Position
+
 
 # This library allows you to generate random numbers.
 import random
@@ -29,11 +30,10 @@ game = hlt.Game()
 
 amount_of_players  = len(game.players)
 
-
-
 # At this point "game" variable is populated with initial map data.
 # This is a good place to do computationally expensive start-up pre-processing.
-# As soon as you call "ready" function below, the 2 second per turn timer will start.
+# As soon as you call "ready" function below, the 2 second per turn timer will start.graph =
+
 distance_map, initial_halite = game.game_map.dijkstra_map(game.me.shipyard)
 logging.info("Inital halite is: {}".format(initial_halite))
 
@@ -45,23 +45,27 @@ logging.info("Successfully created bot! My Player ID is {}.".format(game.my_id))
 
 TIMING = True
 
-GAME_STATE = 'early'
 HALITE_RETURN_VALUE = 900
-STOP_VALUE = 0.5
+STOP_VALUE_COLLECTING = 0.5
 
+# Game states: 'ramp', 'collection', 'suicide'
+game_state = constants.GAME_STATE_RAMP
+
+# Mission control is a dict, where an objective is assigned for each ship.
 mission_control = {}
-
 """ <<<Game Loop>>> """
 while True:
     if TIMING: round_timer_start = timer()
     # This loop handles each turn of the game. The game object changes every turn, and you refresh that state by
     #   running update_frame().
     game.update_frame()
+
     # You extract player metadata and the updated map metadata here for convenience.
     me = game.me
     game_map = game.game_map
 
-    me_ships = me.get_ships_id()
+    # These are my ships
+    me_ships = me.get_ships()
     logging.info('We have {} ships'.format(len(me_ships)))
 
     if TIMING: map_timer_start = timer()
@@ -69,17 +73,32 @@ while True:
     halite_collected = 1 - avg_halite / initial_halite
     logging.info("Average halite is: {}, {}".format(avg_halite, halite_collected))
 
-
     if TIMING: map_timer_end = timer()
     if TIMING: logging.info("Created map in {}".format(map_timer_end-map_timer_start))
 
     remaining_turns = constants.MAX_TURNS - game.turn_number
 
+    # Determine gamestate
+    if avg_halite < STOP_VALUE_COLLECTING:
+        game_state = constants.GAME_STATE_COLLECTING
+
     # SET THE OBJECTIVE
     logging.info("SETTING OBJECTIVES")
     calculate_distance = game_map.calculate_distance
 
-    for ship in me.get_ships():
+    # if game_map.is_depleted(me.shipyard, avg_halite/8) and not(creating_dropoff) and remaining_turns > 100:
+    #     creating_dropoff = True
+    #
+    #     ship_id, highest_potential = 0, 0
+    #     for ship in me.get_ships():
+    #         potential = game_map.calculate_potential_cell(ship.position)
+    #         if potential > highest_potential:
+    #             ship_id = ship.id
+    #             highest_potential = potential
+    #
+    #     mission_control[ship_id] = constants.OBJECTIVE_DROPOFF
+
+    for ship in me_ships:
         # Returning
         ship_id = ship.id
         logging.info(ship)
@@ -90,18 +109,24 @@ while True:
         if mission_control.get(ship_id) == constants.OBJECTIVE_SUICIDE or distance_to_shipyard+10 > remaining_turns or halite_collected > 0.95:
             mission_control[ship.id] = constants.OBJECTIVE_SUICIDE
             logging.info("Mizu no yo ni nagare")
-            GAME_STATE = 'suicide'
+            game_state = constants.GAME_STATE_SUICIDE
+        # elif mission_control.get(ship_id) == constants.OBJECTIVE_DROPOFF:
+        #     logging.info("Becoming a dropoff")
+        #     continue
         elif mission_control.get(ship_id) == constants.OBJECTIVE_RETURN:
             if ship.position == me.shipyard.position:
-                # We have reached the dropoff; Mining
+                logging.info("Dropped cargo, mining")
                 mission_control[ship.id] = constants.OBJECTIVE_MINE
             else:
                 # Returning
+                logging.info("Returning")
                 mission_control[ship.id] = constants.OBJECTIVE_RETURN
         elif mission_control.get(ship_id) == constants.OBJECTIVE_MINE:
             if ship.halite_amount > HALITE_RETURN_VALUE:
+                logging.info("We are full. Returning")
                 mission_control[ship.id] = constants.OBJECTIVE_RETURN
         else:
+            logging.info("Dunno. Mine I guess")
             mission_control[ship.id] = constants.OBJECTIVE_MINE
 
         logging.info("New objective: {}".format(mission_control.get(ship_id)))
@@ -109,44 +134,47 @@ while True:
     # A command queue holds all the commands you will run this turn. You build this list up and submit it at the
     #   end of the turn.
     logging.info("=========== ORDERING SHIPS ===========")
-    
+
+    # The command list holds the commands for  this turn
     command_list = OrderedDict({})
     for ship in me.get_ships():
         logging.info("={}".format(ship))
         objective = mission_control.get(ship.id)
         logging.info("Objective: {}".format(objective))
         # MOVE ACCORDING TO OBJECTIVE
+
+        # CANT MOVE
+        logging.info('Move cost: {}'.format(game_map[ship.position].halite_amount / constants.MOVE_COST_RATIO))
+        logging.info("Bank: {}".format(ship.halite_amount))
+        if ship.halite_amount < game_map[ship.position].halite_amount / constants.MOVE_COST_RATIO:
+            logging.info("Not enough halite to move")
+            target_direction = Direction.Still
         # DYING
-        if objective == constants.OBJECTIVE_SUICIDE:
+        elif objective == constants.OBJECTIVE_SUICIDE:
             logging.info('Brb, killing myself')
+            #TODO suicide function
             target_direction = game_map.navigate_back(ship, distance_map)
+        # DROPOFF
+        # elif objective == constants.OBJECTIVE_DROPOFF:
+        #     target_direction = game_map.become_dropoff(ship)
 
         # RETURNING
-        if objective == constants.OBJECTIVE_RETURN:
-            if ship.halite_amount < game_map[ship.position].halite_amount/constants.MOVE_COST_RATIO:
-                logging.info('Not enough halite to move. Going back to mining')
-                mission_control[ship.id] = constants.OBJECTIVE_MINE
-            else:
-                logging.info("Returning")
-                target_direction = game_map.navigate_back(ship, distance_map)
+        elif objective == constants.OBJECTIVE_RETURN:
+            logging.info("Returning")
+            target_direction = game_map.navigate_back(ship, distance_map)
 
         # Mining
-        if objective == constants.OBJECTIVE_MINE:
-            # For each of your ships, move towards the highest neighbouring halite
-            if ship.halite_amount < game_map[ship.position].halite_amount / constants.MOVE_COST_RATIO:
-                logging.info('Not enough halite to move')
-                target_direction = Direction.Still
-                mission_control[ship.id] = constants.OBJECTIVE_MINE
+        elif objective == constants.OBJECTIVE_MINE:
 
-            elif game_map[ship.position].halite_amount < avg_halite/15 and game_map[ship.position].halite_amount < 100:
+            if game_map[ship.position].halite_amount < avg_halite/15 and game_map[ship.position].halite_amount < 50:
 
                 neighbours = ship.position.get_surrounding_cardinals()
                 neighbours_halite = [game_map[pos].halite_amount if not (game_map[pos].is_occupied) else -1 for pos in
                                      neighbours]
 
-                if any(x > avg_halite/8 for x in neighbours_halite) and all(x > 100 for x in neighbours_halite):
+                if any(x > avg_halite/8 for x in neighbours_halite):
                     logging.info('Mining neighbour')
-                    target_direction = game_map.mining_dev(ship)
+                    target_direction = game_map.mining(ship)
                 else:
                     logging.info('Looking for mining spots')
                     target_direction = game_map.finding_halite(ship, me.id)
@@ -185,11 +213,11 @@ while True:
         command_list.move_to_end(id, False)
         # logging.info("Collisions: {}".format(sum(destination_list.values()) - len(destination_list)))
         destination_list = Counter([dest for dest, dir in command_list.values()])
-        if GAME_STATE == 'suicide':
+        if game_state == constants.GAME_STATE_SUICIDE:
             del destination_list[me.shipyard.position]
         # logging.info("Dest list: {}".format(destination_list))
 
-    # Avoid getting stuck
+    # AVOID DEADLOCK
     near_spawn = [game_map[x].ship for x in me.shipyard.position.get_surrounding_cardinals() if game_map[x].ship != None]
     if len(near_spawn) == 4 and game_map[me.shipyard.position].ship != None and game_map[me.shipyard.position].ship.owner == me.id:
 
@@ -201,7 +229,7 @@ while True:
     # logging.info("Collisions: {}".format(sum(destination_list.values()) - len(destination_list)))
     logging.info("Command list: {}".format(command_list))
 
-    # Make the moves
+    # FILL UP COMMAND QUEU
     command_queue = []
     for id, array in command_list.items():
         ship = me.get_ship(id)
@@ -211,7 +239,7 @@ while True:
     # If the game is in the first 200 turns and you have enough halite, spawn a ship.
     # Don't spawn a ship if you currently have a ship at port, though - the ships will collide.
     ship_at_port = any(pos == me.shipyard.position for pos in destination_list.keys())
-    if halite_collected < STOP_VALUE and me.halite_amount >= constants.SHIP_COST and not ship_at_port:
+    if game_state == constants.GAME_STATE_RAMP and me.halite_amount >= constants.SHIP_COST and not ship_at_port:
         if game.turn_number <= constants.MAX_TURNS/2:
             command_queue.append(me.shipyard.spawn())
 

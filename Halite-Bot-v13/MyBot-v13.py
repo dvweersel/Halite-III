@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env pypy
 # Python 3.6
 
 # Import the Halite SDK, which will let you interact with the game.
@@ -46,6 +46,8 @@ TIMING = True
 GAME_STATE = 'early'
 HALITE_RETURN_VALUE = 900
 STOP_VALUE = 0.5 - amount_of_players/25
+
+max_time = 0
 
 mission_control = {}
 
@@ -214,6 +216,12 @@ while True:
             command_queue.append(me.shipyard.spawn())
 
     if TIMING: round_timer_end = timer()
-    if TIMING: logging.info("Round took {} second".format(round_timer_end - round_timer_start))
+    if TIMING:
+        time = round_timer_end - round_timer_start
+        logging.info("Round took {} second".format(time))
+    if TIMING:
+        if time > max_time:
+            max_time = time
+        logging.info("Longest round took {} second".format(max_time))
     # Send your moves back to the game environment, ending this turn.
     game.end_turn(command_queue)

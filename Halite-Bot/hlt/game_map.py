@@ -21,7 +21,6 @@ class MapCell:
         self.halite_amount = halite_amount
         self.ship = None
         self.structure = None
-        self.potential = 0
 
     @property
     def is_empty(self):
@@ -169,8 +168,8 @@ class GameMap:
                              neighbours]
 
         max_index = np.argmax(neighbours_halite)
-        if self[ship.position].halite_amount == 0 \
-                or neighbours_halite[max_index] > self[ship.position].halite_amount:
+        # if self[ship.position].halite_amount == 0 \
+        if neighbours_halite[max_index] > self[ship.position].halite_amount:
             move_dir = directions[max_index]
         else:
             move_dir = Direction.Still
@@ -209,7 +208,7 @@ class GameMap:
     def finding_halite(self, ship, id):
 
         normalize = self.normalize
-        calculate_potential = self._calculate_potential_cell
+        calculate_potential = self.calculate_potential_cell
 
         # logging.info("Calculating best potential for {}".format(ship.position))
         potential_highest = 0
@@ -229,7 +228,7 @@ class GameMap:
 
         return move_dir
 
-    def _calculate_potential_cell(self, source, dropoffs, id):
+    def calculate_potential_cell(self, source, dropoffs, id):
         """
         Calculates the potential of a point
         :param: The position for which te calculate dropoffs
@@ -266,7 +265,7 @@ class GameMap:
 
                 # Add new nodes
                 new_distance = distance + 1
-                if new_distance < 20:
+                if new_distance < range:
                     [heappush(q, (new_distance, normalize(neighbour))) for neighbour in position.get_surrounding_cardinals()]
 
         # logging.info("Potential of {} is {}".format(source, potential))
@@ -315,6 +314,60 @@ class GameMap:
             target_pos = self.normalize(ship.position.directional_offset(direction))
             if dijkstra_map[target_pos] < cost:
                 cost = dijkstra_map[target_pos]
+                move_dir = direction
+
+        return move_dir
+
+    def is_depleted(self, source, threshold):
+        normalize = self.normalize
+
+        q, seen = [], {}
+
+        range = 10
+        total_squares = 2*range*(range-1)
+        total_halite = 0
+
+        heappush(q, (0, source))
+        while q:
+            (distance, position) = heappop(q)
+
+            if position in seen:
+                continue
+
+            # Add to seen
+            seen[position] = distance
+
+            total_halite += self[position].halite_amount
+
+            # Add new nodes
+            new_distance = distance + 1
+            if new_distance < range:
+                [heappush(q, (new_distance, normalize(neighbour))) for neighbour in source.position.get_surrounding_cardinals()]
+
+        return total_halite > threshold*total_squares
+
+    def highest_potential(self, ship_list):
+
+        potentials = [self.calculate_potential_cell(pos) for pos in positions]
+
+    def become_dropoff(self, ship):
+
+        normalize = self.normalize
+        calculate_potential = self.calculate_potential_cell
+
+        potential_highest = 0
+        move_dir = Direction.Still
+
+        for direction in Direction.get_all_cardinals():
+            position = normalize(ship.position.directional_offset(direction))
+
+            if self[position].is_occupied:
+                potential = 0
+            else:
+                potential = calculate_potential(position, [], id)
+
+            if potential > potential_highest:
+                potential_highest = potential
                 move_dir = direction
 
         return move_dir

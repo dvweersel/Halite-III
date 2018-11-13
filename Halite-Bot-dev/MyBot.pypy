@@ -45,8 +45,8 @@ logging.info("Successfully created bot! My Player ID is {}.".format(game.my_id))
 
 TIMING = True
 
-HALITE_RETURN_VALUE = 900
-STOP_VALUE_COLLECTING = 0.5
+HALITE_RETURN_VALUE = 950
+STOP_VALUE_COLLECTING = 0.55
 
 # Game states: 'ramp', 'collection', 'suicide'
 game_state = constants.GAME_STATE_RAMP

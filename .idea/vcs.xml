@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Halite-Bot" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Halite-Bot-dev" vcs="Git" />
   </component>
 </project>

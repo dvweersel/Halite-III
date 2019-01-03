@@ -237,7 +237,7 @@ class GameMap:
 
         q, seen = [], {}
 
-        range = self.width + self.height
+        range = 40
         potential = 0
 
         heappush(q, (0, source))

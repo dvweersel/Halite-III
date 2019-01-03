@@ -124,6 +124,7 @@ class GameMap:
 
         return current_position + neighbours
 
+
     @staticmethod
     def _get_target_direction(source, target):
         """
@@ -237,7 +238,7 @@ class GameMap:
 
         q, seen = [], {}
 
-        range = self.width + self.height
+        range = 40
         potential = 0
 
         heappush(q, (0, source))
@@ -293,11 +294,11 @@ class GameMap:
 
             for neighbour in position.get_surrounding_cardinals():
                 neighbour = normalize(neighbour)
-                avg_halite += self[neighbour].halite_amount
                 new_cost = cost + self[neighbour].halite_amount/10 + 50
                 heappush(q, (new_cost, neighbour))
 
-        avg_halite = avg_halite/(self.width*self.height)
+        avg_halite = avg_halite / (self.width * self.height)
+
         return cost_map, avg_halite
 
     def navigate_back(self, ship, dijkstra_map):

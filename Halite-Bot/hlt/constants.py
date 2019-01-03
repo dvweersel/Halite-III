@@ -5,14 +5,13 @@ They are strictly informational.
 """
 
 # My constants
-OBJECTIVE_MINE = 'm'
-OBJECTIVE_RETURN = 'r'
-OBJECTIVE_SUICIDE = 's'
-OBJECTIVE_DROPOFF = 'd'
+OBJECTIVE_MINE = 'mine'
+OBJECTIVE_RETURN = 'return'
+OBJECTIVE_SUICIDE = 'suicide'
+OBJECTIVE_DROPOFF = 'dropoff'
 
-GAME_STATE_RAMP = 'r'
-GAME_STATE_COLLECT = 'c'
-GAME_STATE_SUICIDE = 's'
+GAME_STATE_EARLY = 'early'
+GAME_STATE_MID = 'mid'
 
 def load_constants(constants):
     """
